@@ -20,41 +20,31 @@ class GameScene: SKScene {
     var virtualController: GCVirtualController?
     
     override func sceneDidLoad() {
-
-
-                
+            
         connectVirtualController()
     }
-    
-    
 
-    
-    
-
-    
     func connectVirtualController(){
+        //Configure the virtual controller. Specify what elements you want to use, buttons, dpads etc.
         let controllerConfig = GCVirtualController.Configuration()
         controllerConfig.elements = [
             GCInputLeftThumbstick,
             GCInputButtonA, GCInputButtonB
         ]
+        
+        //create a virtual controller
         let controller = GCVirtualController(configuration: controllerConfig)
         controller.connect()
         virtualController = controller
 
-        //var regController = virtualController.controller
+        //in this example we are using handlers to obtain the input from the Dpad and buttons. Alternatively, you could poll for the values every game loop.
         if let gamePad = virtualController?.controller?.extendedGamepad {
             
             gamePad.leftThumbstick.valueChangedHandler = thumbstickHandler
             gamePad.buttonA.valueChangedHandler = buttonAHandler
             gamePad.buttonB.valueChangedHandler = buttonBHandler
         }
-        
-
-        
     }
-    
-
     
     let thumbstickHandler: GCControllerDirectionPadValueChangedHandler = { dPad, xValue, yValue in
         print("DPAD is working!! x= \(xValue) and y=\(yValue)")
